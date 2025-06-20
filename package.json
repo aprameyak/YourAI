@@ -1,0 +1,15 @@
+{
+  "name": "yourai",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx electron ."
+  },
+  "keywords": ["electron", "llm", "chatgpt", "desktop", "yourai"],
+  "author": "YourAI Team",
+  "license": "MIT",
+  "description": "A professional, offline desktop ChatGPT-style app powered by Ollama. Now called YourAI.",
+  "devDependencies": {
+    "electron": "^36.5.0"
+  }
+} 
