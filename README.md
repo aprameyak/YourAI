@@ -16,11 +16,6 @@ YourAI is a professional, offline desktop application for interacting with large
 
 ---
 
-## Screenshots
-
-<!-- Add screenshots here after first run -->
-
----
 
 ## Prerequisites
 
@@ -60,19 +55,3 @@ YourAI is a professional, offline desktop application for interacting with large
 3. Interact with YourAI in the chat window.
 
 ---
-
-## Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request for improvements or bug fixes.
-
----
-
-## License
-
-MIT
-
----
-
-## Contact
-
-For questions or support, please open an issue on GitHub.
