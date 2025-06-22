@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>YourAI</title>
+  <title>YourAI - Fast Local Chat</title>
   <style>
     html, body { height: 100%; margin: 0; padding: 0; }
     body {
@@ -18,24 +18,74 @@
     }
     #chat-container {
       width: 100%;
-      max-width: 700px;
+      max-width: 900px;
       min-height: 70vh;
       background: #232a36;
       border-radius: 14px;
       box-shadow: 0 6px 32px #0008;
-      padding: 36px 20px 28px 20px;
+      padding: 24px 20px 20px 20px;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
       border: 1.5px solid #2d3646;
     }
+    .header-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      gap: 8px;
+    }
+    .model-selector {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .model-selector select {
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1.5px solid #2d3646;
+      background: #181c24;
+      color: #e0e6ed;
+      font-size: 0.9em;
+      cursor: pointer;
+      transition: border 0.2s;
+    }
+    .model-selector select:focus {
+      border: 1.5px solid #2d8cff;
+      outline: none;
+    }
+    .conversation-controls {
+      display: flex;
+      gap: 8px;
+    }
+    .control-btn {
+      padding: 8px 16px;
+      font-size: 0.9em;
+      border-radius: 6px;
+      background: #232a36;
+      color: #e0e6ed;
+      border: 1.5px solid #2d8cff;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .control-btn:hover {
+      background: #2d8cff;
+      color: #fff;
+    }
+    .control-btn.secondary {
+      border-color: #6c7a92;
+    }
+    .control-btn.secondary:hover {
+      background: #6c7a92;
+    }
     .chat-history {
       flex: 1 1 auto;
       min-height: 300px;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 12px;
       overflow-y: auto;
       scroll-behavior: smooth;
     }
@@ -49,42 +99,42 @@
       color: #fff;
       align-self: flex-end;
       border-radius: 14px 14px 6px 14px;
-      padding: 15px 22px;
+      padding: 12px 18px;
       max-width: 70%;
       box-shadow: 0 2px 8px #0002;
       word-break: break-word;
-      font-size: 1.12em;
-      line-height: 1.5;
+      font-size: 1em;
+      line-height: 1.4;
     }
     .bubble-ai {
       background: linear-gradient(135deg, #232a36 60%, #2d8cff11 100%);
       color: #e0e6ed;
       align-self: flex-start;
       border-radius: 14px 14px 14px 6px;
-      padding: 15px 22px;
+      padding: 12px 18px;
       max-width: 70%;
       box-shadow: 0 2px 8px #2d8cff22;
       word-break: break-word;
-      font-size: 1.12em;
-      line-height: 1.5;
+      font-size: 1em;
+      line-height: 1.4;
       border: 1px solid #2d8cff33;
+      white-space: pre-wrap;
     }
     .avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
       background: #232a36;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.08em;
+      font-size: 0.9em;
       font-weight: 700;
       flex-shrink: 0;
       border: 2px solid #2d8cff;
       box-shadow: 0 1px 8px #2d8cff33;
       letter-spacing: 0.5px;
       text-transform: uppercase;
-      transition: box-shadow 0.2s;
     }
     .avatar-user {
       background: #2d8cff;
@@ -95,36 +145,33 @@
       background: #232a36;
       color: #2d8cff;
       border: 2px solid #2d8cff;
-      box-shadow: 0 0 8px 2px #2d8cff33;
     }
     #error-message {
       color: #ff6b6b;
       margin-bottom: 8px;
       min-height: 20px;
-      font-size: 1em;
+      font-size: 0.9em;
     }
     #yourai-status {
-      margin-bottom: 14px;
-      font-size: 1em;
+      margin-bottom: 12px;
+      font-size: 0.9em;
       font-weight: 500;
       color: #2d8cff;
     }
     #input-row {
       display: flex;
       gap: 10px;
-      margin-top: 10px;
       align-items: center;
     }
     #user-input {
       flex: 1;
-      padding: 13px;
-      font-size: 1.12em;
+      padding: 12px 16px;
+      font-size: 1em;
       border-radius: 8px;
       border: 1.5px solid #2d3646;
       background: #181c24;
       color: #e0e6ed;
       transition: border 0.2s, box-shadow 0.2s;
-      box-shadow: 0 0 0 0 #2d8cff;
     }
     #user-input:focus {
       border: 1.5px solid #2d8cff;
@@ -132,24 +179,21 @@
       box-shadow: 0 0 0 2px #2d8cff44;
     }
     #send-btn, #cancel-btn, #start-yourai-btn {
-      padding: 13px 24px;
-      font-size: 1.12em;
+      padding: 12px 20px;
+      font-size: 1em;
       border-radius: 8px;
       background: #232a36;
       color: #e0e6ed;
       border: 1.5px solid #2d8cff;
       cursor: pointer;
       font-weight: 600;
-      letter-spacing: 0.5px;
-      transition: background 0.2s, color 0.2s, border 0.2s, box-shadow 0.2s;
-      box-shadow: 0 0 0 0 #2d8cff;
+      transition: all 0.2s;
     }
     #send-btn:disabled, #cancel-btn:disabled, #start-yourai-btn:disabled {
       background: #232a36;
       color: #6c7a92;
       border: 1.5px solid #2d3646;
       cursor: not-allowed;
-      box-shadow: none;
     }
     #send-btn:hover:not(:disabled), #cancel-btn:hover:not(:disabled), #start-yourai-btn:hover:not(:disabled) {
       background: #2d8cff;
@@ -158,7 +202,6 @@
       box-shadow: 0 2px 12px #2d8cff33;
     }
     #cancel-btn {
-      margin-left: 4px;
       background: #232a36;
       color: #e0e6ed;
       border: 1.5px solid #ff6b6b;
@@ -167,11 +210,10 @@
       background: #ff6b6b;
       color: #fff;
       border: 1.5px solid #ff6b6b;
-      box-shadow: 0 2px 12px #ff6b6b33;
     }
     #start-yourai-btn, #download-yourai-link {
       margin-bottom: 10px;
-      font-size: 1em;
+      font-size: 0.9em;
       background: #232a36;
       color: #2d8cff;
       border: 1.5px solid #2d8cff;
@@ -179,18 +221,40 @@
       padding: 8px 16px;
       text-decoration: none;
       display: inline-block;
-      transition: background 0.2s, color 0.2s, border 0.2s, box-shadow 0.2s;
+      transition: all 0.2s;
     }
     #start-yourai-btn:hover, #download-yourai-link:hover {
       background: #2d8cff;
       color: #fff;
       border: 1.5px solid #2d8cff;
-      box-shadow: 0 2px 12px #2d8cff33;
+    }
+    .typing-indicator {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      padding: 12px 18px;
+      background: linear-gradient(135deg, #232a36 60%, #2d8cff11 100%);
+      border-radius: 14px 14px 14px 6px;
+      border: 1px solid #2d8cff33;
+      align-self: flex-start;
+    }
+    .typing-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #2d8cff;
+      animation: typing 1.4s infinite ease-in-out;
+    }
+    .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+    .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+    @keyframes typing {
+      0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+      40% { transform: scale(1); opacity: 1; }
     }
     @media (max-width: 800px) {
       #chat-container {
         max-width: 98vw;
-        padding: 12px 2vw 12px 2vw;
+        padding: 16px 2vw 16px 2vw;
       }
       .bubble-user, .bubble-ai {
         max-width: 90vw;
@@ -200,13 +264,28 @@
 </head>
 <body>
   <main id="chat-container" aria-label="YourAI chat window">
+    <div class="header-controls">
+      <div class="model-selector">
+        <label for="model-select">Model:</label>
+        <select id="model-select">
+          <option value="llama3.2:latest">llama3.2 (Fast)</option>
+          <option value="llama3:latest">llama3 (Smart)</option>
+          <option value="mistral:latest">Mistral (Balanced)</option>
+          <option value="codellama:latest">CodeLlama (Coding)</option>
+        </select>
+      </div>
+      <div class="conversation-controls">
+        <button id="new-chat-btn" class="control-btn secondary">New Chat</button>
+        <button id="save-chat-btn" class="control-btn">Save</button>
+      </div>
+    </div>
     <section id="chat-history" class="chat-history" aria-live="polite"></section>
     <div id="error-message" role="alert"></div>
     <div id="yourai-status"></div>
     <button id="start-yourai-btn" style="display:none;">Start YourAI</button>
     <a id="download-yourai-link" href="https://ollama.com/download" target="_blank" style="display:none;">Download YourAI</a>
     <form id="input-row" autocomplete="off" onsubmit="return false;">
-      <input id="user-input" type="text" placeholder="Type your message..." autocomplete="off" aria-label="Type your message" />
+      <input id="user-input" type="text" placeholder="Ask me anything..." autocomplete="off" aria-label="Type your message" />
       <button id="send-btn" type="button">Send</button>
       <button id="cancel-btn" type="button" style="display:none;">Cancel</button>
     </form>

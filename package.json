@@ -3,13 +3,25 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "npx electron ."
+    "start": "npx electron .",
+    "dev": "npx electron . --dev",
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "package": "npx electron-builder",
+    "dist": "npm run build && npx electron-builder --publish=never"
   },
-  "keywords": ["electron", "llm", "chatgpt", "desktop", "yourai"],
+  "keywords": [
+    "electron",
+    "llm",
+    "chatgpt",
+    "desktop",
+    "yourai"
+  ],
   "author": "YourAI Team",
   "license": "MIT",
   "description": "A professional, offline desktop ChatGPT-style app powered by Ollama. Now called YourAI.",
   "devDependencies": {
-    "electron": "^36.5.0"
+    "electron": "^36.5.0",
+    "typescript": "^5.8.3"
   }
-} 
+}
