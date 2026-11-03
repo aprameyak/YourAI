@@ -21,7 +21,7 @@
   "license": "MIT",
   "description": "A professional, offline desktop ChatGPT-style app powered by Ollama. Now called YourAI.",
   "devDependencies": {
-    "electron": "^36.5.0",
+    "electron": "^43.8.6",
     "typescript": "^5.8.3"
   }
 }
