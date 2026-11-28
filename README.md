@@ -23,3 +23,27 @@
 - **Desktop Framework**: Electron
 - **Language**: TypeScript, Node.js
 - **Model Inference**: Ollama (local LLMs, e.g. LLaMA 3)
+
+## Getting started
+
+Requires [Node.js](https://nodejs.org) and [Ollama](https://ollama.com/download).
+
+```bash
+ollama pull llama3.2
+git clone https://github.com/aprameyak/YourAI.git
+cd YourAI
+npm install
+npm start
+```
+
+Ollama has to be running before you start the app (`brew services start ollama` on macOS, `ollama serve` on Linux). If it is not, the app tells you.
+
+To build a distributable binary:
+
+```bash
+npm run dist
+```
+
+## License
+
+MIT, see [LICENSE](LICENSE).
